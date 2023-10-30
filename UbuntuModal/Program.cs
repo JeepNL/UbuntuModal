@@ -9,8 +9,8 @@ static class Program
     static void Main()
     {
         Application.Init();
-        var top = Application.Top;
-        var btnStart = new Button("Start Process");
+        Toplevel? top = Application.Top;
+        Button? btnStart = new Button("Start Process");
         btnStart.Clicked += () => {
             RegisterLog("Starting logging...");
             Application.MainLoop.AddTimeout(TimeSpan.FromMilliseconds(100), PrepareBackgroundProcess);
@@ -23,7 +23,7 @@ static class Program
             Width = Dim.Fill(),
             Height = Dim.Fill()
         };
-        var win = new Window("Background Process Sample");
+        Window? win = new Window("Background Process Sample");
         win.Add(btnStart, lstView);
         top.Add(win);
 
