@@ -2,15 +2,15 @@
 
 static class Program
 {
-    public static ListView lstView = new ListView();
-    public static List<string> logList = new List<string>();
-    public static Dialog? dlg;
+    public static ListView lstView = new();
+    public static List<string> logList = [];
+    public static Dialog? dialog;
 
     static void Main()
     {
         Application.Init();
         Toplevel? top = Application.Top;
-        Button? btnStart = new Button("Start Process");
+        Button? btnStart = new("Start Process");
         btnStart.Clicked += () => {
             RegisterLog("Starting logging...");
             Application.MainLoop.AddTimeout(TimeSpan.FromMilliseconds(100), PrepareBackgroundProcess);
@@ -23,22 +23,23 @@ static class Program
             Width = Dim.Fill(),
             Height = Dim.Fill()
         };
-        Window? win = new Window("Background Process Sample");
+        Window? win = new("Background Process Sample");
         win.Add(btnStart, lstView);
         top.Add(win);
 
-        bool PrepareBackgroundProcess(MainLoop _)
+        static bool PrepareBackgroundProcess(MainLoop _)
         {
-            if (dlg != null)
+            if (dialog != null)
             {
                 Application.MainLoop.Invoke(async () => {
                     await RunBackgroundProcessAsync();
                 });
             }
-            return dlg == null;
+            return dialog == null;
         }
 
         Application.Run();
+        Application.Shutdown();
     }
 
     static async Task RunBackgroundProcessAsync()
@@ -52,8 +53,8 @@ static class Program
     static void StartBackgroundProcessDialog()
     {
         RegisterLog("Starting the modal dialog...");
-        dlg = new Dialog("This will be closed after the process is finished.");
-        Application.Run(dlg);
+        dialog = new Dialog("This will be closed after the process is finished.");
+        Application.Run(dialog);
         RegisterLog("Stopping the modal dialog...");
     }
 
